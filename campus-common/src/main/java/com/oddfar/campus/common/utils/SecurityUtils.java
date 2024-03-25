@@ -26,7 +26,6 @@ public class SecurityUtils {
         }
     }
 
-
     /**
      * 获取用户账户
      **/
@@ -43,7 +42,7 @@ public class SecurityUtils {
      **/
     public static LoginUser getLoginUser() {
         try {
-            LoginUser loginUser = (LoginUser) getAuthentication().getPrincipal();
+            LoginUser loginUser = (LoginUser)getAuthentication().getPrincipal();
             //用户不正常
             if (!loginUser.getUser().getStatus().equals(UserConstants.NORMAL)) {
                 throw new ServiceException("用户被禁止", HttpStatus.FORBIDDEN);
@@ -107,5 +106,11 @@ public class SecurityUtils {
      */
     public static boolean isAdmin(Long userId) {
         return userId != null && 1L == userId;
+    }
+
+    public static void main(String[] args) {
+        System.out.println(SecurityUtils.encryptPassword("admin"));
+
+        System.out.println(SecurityUtils.matchesPassword( "admin","$2a$10$m4HqjLpI3w.gAUI0tsTKh.IcNV8BsmhJgxBShw5W71b.gUgDuR.ha"));
     }
 }
