@@ -56,5 +56,14 @@ public class TestController {
         iShopService.selectShopList();
         return R.ok();
     }
+    /**
+     * 匿名接口，不需要认证，所有人都可访问
+     */
+    @Anonymous
+    @GetMapping(value = "/result", name = "测试3的接口")
+    public R result() {
+        imtService.appointmentResults();
+        return R.ok();
+    }
 
 }

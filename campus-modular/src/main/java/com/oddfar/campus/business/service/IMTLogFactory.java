@@ -21,7 +21,7 @@ public class IMTLogFactory {
 
         operLog.setOperTime(new Date());
 
-        if (logContent.contains("报错")) {
+        if (logContent.contains("报错")||logContent.contains("失败")) {
             //失败
             operLog.setStatus(1);
         } else {

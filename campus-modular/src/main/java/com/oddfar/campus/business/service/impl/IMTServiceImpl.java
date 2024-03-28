@@ -571,6 +571,9 @@ public class IMTServiceImpl implements IMTService {
                     if (item.getInteger("status") == 2 && DateUtil.between(item.getDate("reservationTime"), new Date(), DateUnit.HOUR) < 24) {
                         String logContent = DateUtil.formatDate(item.getDate("reservationTime")) + " 申购" + item.getString("itemName") + "成功";
                         IMTLogFactory.reservation(iUser, logContent);
+                    }else if((item.getInteger("status") != 2 && DateUtil.between(item.getDate("reservationTime"), new Date(), DateUnit.HOUR) < 24) ){
+                        String logContent =" 申购失败-" + DateUtil.formatDate(item.getDate("reservationTime"))+"-" + item.getString("itemName") ;
+                        IMTLogFactory.reservation(iUser, logContent);
                     }
                 }
             } catch (Exception e) {
