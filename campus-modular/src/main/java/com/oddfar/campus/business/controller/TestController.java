@@ -65,5 +65,16 @@ public class TestController {
         imtService.appointmentResults();
         return R.ok();
     }
-
+    @Anonymous
+    @GetMapping(value = "/reservationBatch", name = "测试3的接口")
+    public R reservationBatch() {
+        imtService.reservationBatch();
+        return R.ok();
+    }
+    @Anonymous
+    @GetMapping(value = "/travelRewardBatch", name = "测试3的接口")
+    public R travelRewardBatch() {
+        imtService.getTravelRewardBatch();
+        return R.ok();
+    }
 }
