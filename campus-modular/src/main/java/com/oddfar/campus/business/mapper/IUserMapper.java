@@ -57,7 +57,7 @@ public interface IUserMapper extends BaseMapperX<IUser> {
      */
     default List<IUser> selectReservationUserByMinute(int minute) {
         return selectList(new LambdaQueryWrapperX<IUser>()
-                        .eq(IUser::getMinute, minute)
+//                        .eq(IUser::getMinute, minute)
 //                      .gt(IUser::getExpireTime, new Date())
                         .ne(IUser::getLat, "")
                         .ne(IUser::getLng, "")
