@@ -28,10 +28,10 @@ public class PushPlusApi {
             content = iUser.getMobile() + System.lineSeparator() + operLog.getLogContent();
             AsyncManager.me().execute(sendNotice(token, title, content, "txt"));
         } else {
-            //预约失败
-            title = iUser.getRemark() + "-i茅台执行失败";
-            content = iUser.getMobile() + System.lineSeparator() + operLog.getLogContent();
-            AsyncManager.me().execute(sendNotice(token, title, content, "txt"));
+            //预约失败-不通知
+//            title = iUser.getRemark() + "-i茅台执行失败";
+//            content = iUser.getMobile() + System.lineSeparator() + operLog.getLogContent();
+//            AsyncManager.me().execute(sendNotice(token, title, content, "txt"));
         }
 
 
