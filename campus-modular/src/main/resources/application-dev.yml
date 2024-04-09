@@ -7,7 +7,7 @@ spring:
     dynamic:
       # 性能分析插件(有性能损耗 不建议生产环境使用)
       # 文档 https://baomidou.com/pages/833fab/
-      p6spy: true
+      p6spy: false
       # 设置默认的数据源或者数据源组,默认值即为 master
       primary: master
       # 严格模式 匹配不到数据源则报错

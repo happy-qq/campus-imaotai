@@ -2,6 +2,7 @@ package com.oddfar.campus.business.task;
 
 import com.oddfar.campus.business.service.IMTService;
 import com.oddfar.campus.business.service.IUserService;
+import com.oddfar.campus.common.core.RedisCache;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -10,6 +11,8 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.scheduling.annotation.Scheduled;
+
+import java.util.concurrent.TimeUnit;
 
 /**
  * i茅台定时任务
@@ -24,22 +27,22 @@ public class CampusIMTTask {
 
     private final IUserService iUserService;
 
+    @Autowired private RedisCache redisCache;
 
     /**
      * 1：10 批量修改用户随机预约的时间
      */
     @Async
-    @Scheduled(cron = "0 10 1 ? * * ")
+    @Scheduled (cron = "0 10 1 ? * * ")
     public void updateUserMinuteBatch() {
         iUserService.updateUserMinuteBatch();
     }
-
 
     /**
      * 11点期间，每分钟执行一次批量获得旅行奖励
      */
     @Async
-    @Scheduled(cron = "0 0/1 11 ? * *")
+    @Scheduled (cron = "0 0/1 11 ? * *")
     public void getTravelRewardBatch() {
         imtService.getTravelRewardBatch();
 
@@ -49,15 +52,20 @@ public class CampusIMTTask {
      * 9点期间，每分钟执行一次
      */
     @Async
-    @Scheduled(cron = "0 0/1 9 ? * *")
+    @Scheduled (cron = "0 0/1 9 ? * *")
     public void reservationBatchTask() {
-        imtService.reservationBatch();
+        String ret = redisCache.getCacheObject("reservation");
+        if (ret == null) {
+            imtService.reservationBatch();
+            redisCache.setCacheObject("reservation", "OK", 60 * 60 * 1, TimeUnit.SECONDS);
+        } else {
+            return;
+        }
 
     }
 
-
     @Async
-    @Scheduled(cron = "0 10,55 7,8 ? * * ")
+    @Scheduled (cron = "0 10,55 7,8 ? * * ")
     public void refresh() {
         logger.info("「刷新数据」开始刷新版本号，预约item，门店shop列表  ");
         try {
@@ -68,15 +76,22 @@ public class CampusIMTTask {
 
     }
 
-
     /**
-     * 18.05分获取申购结果
+     * 每分钟执行一次 申购结果
      */
     @Async
-    @Scheduled(cron = "0 28 18 ? * * ")
+    @Scheduled (cron = "0 0/1 15 ? * * ")
     public void appointmentResults() {
-        imtService.appointmentResults();
-    }
 
+        String ret = redisCache.getCacheObject("result");
+        if (ret == null) {
+            imtService.appointmentResults();
+            redisCache.setCacheObject("result", "OK", 60 * 60 * 1, TimeUnit.SECONDS);
+        } else {
+            return;
+        }
+
+
+    }
 
 }
