@@ -193,6 +193,13 @@ public class IMTServiceImpl implements IMTService {
                 JSONObject json = reservation(iUser, itemId, shopId);
                 logContent += String.format("[预约项目]：%s\n[shopId]：%s\n[结果返回]：%s\n\n", itemId, shopId, json.toString());
 
+                if (logContent.contains("报错")||logContent.contains("失败")) {
+                    //失败
+                    logger.info("预约失败-{}",logContent);
+                } else {
+                    logger.info("预约成功");
+                }
+
                 //随机延迟3～5秒
                 Random random = new Random();
                 int sleepTime = random.nextInt(3) + 3;
