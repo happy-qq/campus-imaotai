@@ -80,7 +80,7 @@ public class CampusIMTTask {
      * 每分钟执行一次 申购结果
      */
     @Async
-    @Scheduled (cron = "0 0/1 15 ? * * ")
+    @Scheduled (cron = "0 0/1 18 ? * * ")
     public void appointmentResults() {
 
         String ret = redisCache.getCacheObject("result");
