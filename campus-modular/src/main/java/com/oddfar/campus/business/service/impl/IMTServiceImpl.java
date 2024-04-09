@@ -544,9 +544,17 @@ public class IMTServiceImpl implements IMTService {
 
     @Override
     public void refreshAll() {
-        refreshMTVersion();
-        iShopService.refreshShop();
-        iShopService.refreshItem();
+        String ret = redisCache.getCacheObject("shop");
+        if (ret == null) {
+            //每天刷新,限制首次启动刷新
+            refreshMTVersion();
+            iShopService.refreshShop();
+            iShopService.refreshItem();
+            redisCache.setCacheObject("shop", "OK", 60 * 60 * 12, TimeUnit.SECONDS);
+        } else {
+            return;
+        }
+
     }
 
     @Override
