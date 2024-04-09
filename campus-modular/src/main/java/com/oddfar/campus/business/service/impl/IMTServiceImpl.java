@@ -548,7 +548,9 @@ public class IMTServiceImpl implements IMTService {
         if (ret == null) {
             //每天刷新,限制首次启动刷新
             refreshMTVersion();
+            logger.info("refresh shop");
             iShopService.refreshShop();
+            logger.info("refresh item");
             iShopService.refreshItem();
             redisCache.setCacheObject("shop", "OK", 60 * 60 * 12, TimeUnit.SECONDS);
         } else {
