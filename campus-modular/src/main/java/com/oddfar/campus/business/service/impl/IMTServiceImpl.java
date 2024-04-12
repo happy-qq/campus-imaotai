@@ -267,8 +267,11 @@ public class IMTServiceImpl implements IMTService {
 
         if(body.getInteger("code") != 2000){
             String message = "领取小茅运失败";
-            throw new ServiceException(message);
+            logger.error(message);
+//            throw new ServiceException(message);
         }
+        logger.info("领取小茅运成功"+body);
+
     }
 
     public void shareReward(IUser iUser){
@@ -322,9 +325,11 @@ public class IMTServiceImpl implements IMTService {
         try {
             String s = travelReward(iUser);
             logContent += "[获得旅行奖励]:" + s;
+            logger.info(logContent);
         } catch (Exception e) {
 //            e.printStackTrace();
             logContent += "执行报错--[获得旅行奖励]:" + e.getMessage();
+            logger.error(logContent);
         }
         //日志记录
         IMTLogFactory.reservation(iUser, logContent);
@@ -521,6 +526,8 @@ public class IMTServiceImpl implements IMTService {
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
+            //旅行
+            this.getTravelReward(iUser);
 
         }
     }
