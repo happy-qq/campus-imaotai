@@ -197,7 +197,7 @@ public class IMTServiceImpl implements IMTService {
                     //失败
                     logger.info("预约失败-{}",logContent);
                 } else {
-                    logger.info("预约成功");
+                    logger.info(iUser.getMobile()+":预约成功");
                 }
 
                 //随机延迟3～5秒
@@ -238,8 +238,10 @@ public class IMTServiceImpl implements IMTService {
                     //预约后领取耐力值
                     String energyAward = getEnergyAward(iUser);
                     logContent += "[申购耐力值]:" + energyAward;
+                    logger.info("申购耐力值成功:"+logContent);
                 } catch (Exception e) {
                     logContent += "执行报错--[申购耐力值]:" + e.getMessage();
+                    logger.error("申购耐力值失败:"+logContent);
                 }
                 //日志记录
                 IMTLogFactory.reservation(iUser, logContent);
