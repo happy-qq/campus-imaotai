@@ -77,4 +77,11 @@ public class TestController {
         imtService.getTravelRewardBatch();
         return R.ok();
     }
+
+    @Anonymous
+    @GetMapping(value = "/travelDelay", name = "申购耐力值")
+    public R getAwardDelayAll() {
+        imtService.getAwardDelayAll();
+        return R.ok();
+    }
 }

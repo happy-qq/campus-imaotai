@@ -1,6 +1,7 @@
 package com.oddfar.campus.business.service;
 
 import com.oddfar.campus.business.entity.IUser;
+import org.springframework.scheduling.annotation.Async;
 
 public interface IMTService {
     /**
@@ -37,6 +38,10 @@ public interface IMTService {
      * 预约
      */
     void reservation(IUser iUser);
+    /**
+     * 获取申购耐力值
+     */
+    void getAwardDelayAll();
 
     /**
      * 获取申购耐力值

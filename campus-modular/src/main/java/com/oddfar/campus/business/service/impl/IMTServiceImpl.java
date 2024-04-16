@@ -222,6 +222,21 @@ public class IMTServiceImpl implements IMTService {
         getEnergyAwardDelay(iUser);
     }
 
+    @Override
+    public void getAwardDelayAll() {
+        try {
+            int minute = DateUtil.minute(new Date());
+            List<IUser> iUsers = iUserService.selectReservationUserByMinute(minute);
+            for (IUser iUser : iUsers) {
+                logger.info("「开始获得申购耐力值」" + iUser.getMobile());
+                getEnergyAwardDelay(iUser);
+                //延时3秒
+                TimeUnit.SECONDS.sleep(3);
+            }
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+    }
     /**
      * 延迟执行：获取申购耐力值，并记录日志
      *
@@ -238,10 +253,10 @@ public class IMTServiceImpl implements IMTService {
                     //预约后领取耐力值
                     String energyAward = getEnergyAward(iUser);
                     logContent += "[申购耐力值]:" + energyAward;
-                    logger.info("申购耐力值成功:"+logContent);
+                    logger.info(iUser.getMobile()+":申购耐力值成功:"+logContent);
                 } catch (Exception e) {
                     logContent += "执行报错--[申购耐力值]:" + e.getMessage();
-                    logger.error("申购耐力值失败:"+logContent);
+                    logger.error(iUser.getMobile()+":申购耐力值失败:"+logContent);
                 }
                 //日志记录
                 IMTLogFactory.reservation(iUser, logContent);
@@ -264,6 +279,7 @@ public class IMTServiceImpl implements IMTService {
 
         HttpResponse execute = request.execute();
         JSONObject body = JSONObject.parseObject(execute.body());
+        
 
         if(body.getInteger("code") != 2000){
             String message = "领取小茅运失败";
@@ -360,7 +376,8 @@ public class IMTServiceImpl implements IMTService {
             //本次旅行奖励领取后, 当月实际剩余旅行奖励
             if (travelRewardXmy > currentPeriodCanConvertXmyNum) {
                 String message = "当月无可领取奖励";
-                throw new ServiceException(message);
+//                throw new ServiceException(message);
+                logger.equals(message);
             }
         }
 
